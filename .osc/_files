@@ -1,5 +1,0 @@
-<directory name="obs-tools" rev="3" vrev="3" srcmd5="cf1cc190bc87d09d296c9c00cbd39108">
-  <entry name="obs_service_list.pl" md5="95a957a0fc86f941c73018be25e17bb2" size="1625" mtime="1710874594" />
-  <entry name="obs_service_run.pl" md5="e90e64f50b4cf8ff699839da4f670451" size="6050" mtime="1710874594" />
-  <entry name="obs_service_tools.spec" md5="c9b9d81821a721bd7ed1d2338a9acff0" size="506" mtime="1710948766" />
-</directory>
