@@ -1,5 +1,5 @@
 #!/bin/bash
-obs_dnf_install
+obs_pkg_install
 obs_service_run
 (
 cd .osc/_output_dir

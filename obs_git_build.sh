@@ -10,7 +10,7 @@ outdir="${3:-_output_dir}"
 git clone --depth 1 "$url" "$name"
 (
 cd "$name"
-obs_dnf_install
+obs_pkg_install
 obs_service_run
 cp -R .osc/_output_dir "../${outdir}"
 )
