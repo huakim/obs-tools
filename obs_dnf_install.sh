@@ -6,10 +6,10 @@ do
    AR+=(obs-service-"$i")
 done
 
-for i in dnf dnf5 zypper microdnf apt-rpm do
-  pkg="$(command -v $i)"
-  if [[ -n "${pkg}" ]]; then
-    ${pkg} install -y "${AR[@]}"
+for i in dnf dnf5 zypper microdnf apt-rpm;
+do
+  if command -v "${i}"; then
+    "${i}" install -y "${AR[@]}"
     break
   fi
 done

@@ -5,6 +5,9 @@ License: LGPL
 Summary: %{name}
 BuildArch: noarch
 
+BuildRequires: (perl-generators or %{_rpmconfigdir}/perl.req)
+BuildRequires: (sed or %{_bindir}/sed)
+
 Source0: obs_service_run.pl
 Source1: obs_service_list.pl
 Source2: obs_copr_build.sh
@@ -13,8 +16,7 @@ Source4: obs_git_build.sh
 
 Requires: (%{_bindir}/perl or perl-interpreter or perl)
 Requires: cpio
-%global _use_internal_dependency_generator 0
-%global __find_requires %{_rpmconfigdir}/perl.req
+%(echo -e "%{SOURCE0}\n%{SOURCE1}" | '%{_rpmconfigdir}/perl.req' | sed 's~^~Requires: ~' )
 
 %description
 %{summary}.

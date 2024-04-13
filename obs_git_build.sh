@@ -8,9 +8,9 @@ name="$2"
 fi
 outdir="${3:-_output_dir}"
 git clone --depth 1 "$url" "$name"
-(
-cd "$name"
+
+pushd "$name"
 obs_pkg_install
 obs_service_run
 cp -R .osc/_output_dir "../${outdir}"
-)
+popd

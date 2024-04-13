@@ -133,7 +133,7 @@ chdir($output_directory);
 while(my($key, $value) = each %source_files) { 
     my $basename = catfile($source_directory, $value);
     link($basename, $key);
-    my ($ext) = $value =~ /(\.[^.]+)$/;
+    my $ext = substr($value, -8);
     print("% $key \n@ $value \n! $ext\n");
     if ($ext eq '.obscpio'){
         open( my $input_fh, "<", $basename );
