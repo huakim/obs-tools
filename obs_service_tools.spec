@@ -58,7 +58,7 @@ Summary: %{name}
 Requires: %{name}-pkg
 Requires: (%{_bindir}/git or git)
 
-%description copr
+%description git
 %{summary}.
 
 %files copr
