@@ -1,5 +1,5 @@
 Name: obs-tools
-Version: 3
+Version: 4
 Release: 0
 License: LGPL
 Summary: %{name}
