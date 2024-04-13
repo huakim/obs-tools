@@ -61,5 +61,5 @@ Requires: (%{_bindir}/git or git)
 %description git
 %{summary}.
 
-%files copr
+%files git
 %attr(755, root, root) %{_bindir}/obs_git_build
