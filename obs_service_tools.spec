@@ -5,7 +5,7 @@ License: LGPL
 Summary: %{name}
 BuildArch: noarch
 
-BuildRequires: (perl-generators or %{_rpmconfigdir}/perl.req)
+BuildRequires: (rpm-build-perl or perl-generators or %{_rpmconfigdir}/perl.req)
 BuildRequires: (sed or %{_bindir}/sed)
 
 Source0: obs_service_run.pl

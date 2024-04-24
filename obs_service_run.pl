@@ -236,7 +236,7 @@ sub RunBefore {
      $source = $source_directory;
    };
    my $uuid = random();
-   my $outdir = ".osc/.tmp/_service.$name.$uuid";
+   my $outdir = ".osc/_tmp_dir/_service.$name.$uuid";
    make_path($outdir);
    $outdir = Cwd::realpath($outdir);
    return Run($source, $outdir, $name, sub{
