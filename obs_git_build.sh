@@ -7,10 +7,23 @@ else
 name="$2"
 fi
 outdir="${3:-_output_dir}"
+
+declare -i i=0
+
+if [[ "$name" == "$outdir" ]]; then
+  name="${name}_0"
+fi
+
+if [[ -e "${name}" ]]; do
+  while [[ -e "${name}_${i}" ]]; do
+    i=$i+1
+  done
+  name="${name}_${i}"
+done
+
 git clone --depth 1 "$url" "$name"
 
-pushd "$name"
-obs_pkg_install
+pushd "${name}"
 obs_service_run
-cp -R .osc/_output_dir "../${outdir}"
 popd
+mv -vTf "${name}/.osc/_output_dir" "${outdir}"
