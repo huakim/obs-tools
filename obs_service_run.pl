@@ -12,40 +12,40 @@ use File::Remove 'remove';
 use File::Spec::Functions qw(abs2rel catfile catdir);
 use Archive::Libarchive::Extract;
 
-sub link_unique_files_and_directories {
-    my $source_dir = Cwd::realpath(shift);
-    my $destination_dir = Cwd::realpath(shift);
-    
-  #  print("#######---   $source_dir\n");
-  #  print("#######---   $destination_dir\n");
-    my $dir;
-    make_path($destination_dir);
-    # Store existing files and directories in the destination directory
-    my %existing_files;
-    opendir $dir, $destination_dir;
-    for my $basename (readdir $dir){
-        my $path = catfile($destination_dir, $basename);
-        $existing_files{$basename} = 1;
-    };
-    closedir $dir;
-    # Traverse the source directory and process each file and directory
-    opendir $dir, $source_dir;
-    for my $basename (readdir $dir) {
-        unless ($existing_files{$basename}){
-            my $path = catfile($source_dir, $basename);
-            my $dest_file = catfile($destination_dir, $basename);
-            if (-f $path) {
-                link($path, $dest_file);
-            } elsif (-d $path) {
-                $path = abs2rel($path, $destination_dir);
-                if (! ($path eq '.')){
-                    symlink($path, $dest_file);
-                }
-            }
-        }
-    };
-    closedir $dir;
-}
+# sub link_unique_files_and_directories {
+#     my $source_dir = Cwd::realpath(shift);
+#     my $destination_dir = Cwd::realpath(shift);
+#
+#   #  print("#######---   $source_dir\n");
+#   #  print("#######---   $destination_dir\n");
+#     my $dir;
+#     make_path($destination_dir);
+#     # Store existing files and directories in the destination directory
+#     my %existing_files;
+#     opendir $dir, $destination_dir;
+#     for my $basename (readdir $dir){
+#         my $path = catfile($destination_dir, $basename);
+#         $existing_files{$basename} = 1;
+#     };
+#     closedir $dir;
+#     # Traverse the source directory and process each file and directory
+#     opendir $dir, $source_dir;
+#     for my $basename (readdir $dir) {
+#         unless ($existing_files{$basename}){
+#             my $path = catfile($source_dir, $basename);
+#             my $dest_file = catfile($destination_dir, $basename);
+#             if (-f $path) {
+#                 link($path, $dest_file);
+#             } elsif (-d $path) {
+#                 $path = abs2rel($path, $destination_dir);
+#                 if (! ($path eq '.')){
+#                     symlink($path, $dest_file);
+#                 }
+#             }
+#         }
+#     };
+#     closedir $dir;
+# }
 
 # Usage example:
 
@@ -63,9 +63,9 @@ my $services_node = $doc->documentElement();
 
 my @build_mode_functions;
 my %source_files;
-
-our $source_directory = Cwd::realpath('./.osc/_sources_dir');
-our $output_directory = Cwd::realpath('./.osc/_output_dir');
+our $home_directory = getcwd();
+our $source_directory = "${home_directory}/.osc/_sources_dir";
+our $output_directory = "${home_directory}/.osc/_output_dir";
 
 remove(\1, $output_directory);
 remove(\1, $source_directory);
@@ -238,9 +238,8 @@ sub RunBefore {
      $source = $source_directory;
    };
    my $uuid = random();
-   my $outdir = ".osc/_tmp_dir/_service.$name.$uuid";
+   my $outdir = "${home_directory}/.osc/_tmp_dir/_service.$name.$uuid";
    make_path($outdir);
-   $outdir = Cwd::realpath($outdir);
    return Run($source, $outdir, $name, sub{
       my ($cwd, $outdir, $service_name) = @_;
       my $dir;
