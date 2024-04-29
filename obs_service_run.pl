@@ -10,7 +10,7 @@ use Cwd;
 use File::Basename;
 use File::Remove 'remove';
 use File::Spec::Functions qw(abs2rel catfile catdir);
-use IPC::Run3;
+use Archive::Libarchive::Extract;
 
 sub link_unique_files_and_directories {
     my $source_dir = Cwd::realpath(shift);
@@ -136,11 +136,13 @@ while(my($key, $value) = each %source_files) {
     my $ext = substr($value, -8);
     print("% $key \n@ $value \n! $ext\n");
     if ($ext eq '.obscpio'){
-        open( my $input_fh, "<", $basename );
-        run3 [qw(cpio -idmu --sparse 
-        --no-absolute-filenames 
-        --force-local )], $input_fh; 
-        close($input_fh);
+         my $extract = Archive::Libarchive::Extract->new( filename => $basename );
+         $extract->extract;
+#        open( my $input_fh, "<", $basename );
+#        run3 [qw(cpio -idmu --sparse 
+#        --no-absolute-filenames 
+#        --force-local )], $input_fh; 
+#        close($input_fh);
     }
 }
 #RunBefore('extract_file')->('archive', '*.obscpio',  'file', '*');
