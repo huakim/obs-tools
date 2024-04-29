@@ -14,12 +14,12 @@ if [[ "$name" == "$outdir" ]]; then
   name="${name}_0"
 fi
 
-if [[ -e "${name}" ]]; do
+if [[ -e "${name}" ]]; then
   while [[ -e "${name}_${i}" ]]; do
     i=$i+1
   done
   name="${name}_${i}"
-done
+fi
 
 git clone --depth 1 "$url" "$name"
 
