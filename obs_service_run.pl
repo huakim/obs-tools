@@ -134,7 +134,7 @@ while(my($key, $value) = each %source_files) {
     my $basename = catfile($source_directory, $value);
     link($basename, $key);
     my $ext = substr($value, -8);
-    print("% $key \n@ $value \n! $ext\n");
+  #  print("% $key \n@ $value \n! $ext\n");
     if ($ext eq '.obscpio'){
          my $extract = Archive::Libarchive::Extract->new( filename => $basename );
          $extract->extract;
@@ -211,7 +211,7 @@ sub Run {
             }
             my $outdir_rel = abs2rel($outdir_rel, $cwd_rel);
 
-            print "______RUN______\ncd $cwd_rel ; mkdir -p $outdir_rel ; $path --outdir $outdir_rel ", join(' ', @args), " ; \n______END______\n";
+            print "\n______RUN______\ncd $cwd_rel ; mkdir -p $outdir_rel ; $path --outdir $outdir_rel ", join(' ', @args), " ; \n";
             chdir $cwd_rel;
             exec($path, '--outdir', $outdir_rel, @args);
         } else {
@@ -219,6 +219,7 @@ sub Run {
             if (defined($final_func)){
                 &$final_func($cwd_rel, $outdir_rel, $service_name);
             }
+            print("\n______END______\n");
         }
     }
 }
