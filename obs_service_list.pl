@@ -24,7 +24,7 @@ foreach my $service_node ($services_node->findnodes('//service')) {
     my $service_mode = $service_node->getAttribute('mode') || 'default';
     $service_mode = lc($service_mode);
     # Simulate the actions performed by OBS services based on the mode and parameters
-    if ($service_mode eq 'Default') {
+    if ($service_mode eq 'default') {
         # Implement the logic for the 'Default' mode
         print("$service_name\n");
     } elsif ($service_mode eq 'trylocal') {

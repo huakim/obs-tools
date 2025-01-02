@@ -4,53 +4,11 @@ use warnings;
 use XML::LibXML;
 use Data::Dumper;
 use File::Path qw(make_path rmtree);
-#!/usr/bin/perl
-
 use Cwd;
-
 use File::Basename;
 use File::Remove 'remove';
 use File::Spec::Functions qw(abs2rel catfile catdir);
-
 use IPC::Run3;
-#use Archive::Libarchive::Extract;
-
-# sub link_unique_files_and_directories {
-#     my $source_dir = Cwd::realpath(shift);
-#     my $destination_dir = Cwd::realpath(shift);
-#
-#   #  print("#######---   $source_dir\n");
-#   #  print("#######---   $destination_dir\n");
-#     my $dir;
-#     make_path($destination_dir);
-#     # Store existing files and directories in the destination directory
-#     my %existing_files;
-#     opendir $dir, $destination_dir;
-#     for my $basename (readdir $dir){
-#         my $path = catfile($destination_dir, $basename);
-#         $existing_files{$basename} = 1;
-#     };
-#     closedir $dir;
-#     # Traverse the source directory and process each file and directory
-#     opendir $dir, $source_dir;
-#     for my $basename (readdir $dir) {
-#         unless ($existing_files{$basename}){
-#             my $path = catfile($source_dir, $basename);
-#             my $dest_file = catfile($destination_dir, $basename);
-#             if (-f $path) {
-#                 link($path, $dest_file);
-#             } elsif (-d $path) {
-#                 $path = abs2rel($path, $destination_dir);
-#                 if (! ($path eq '.')){
-#                     symlink($path, $dest_file);
-#                 }
-#             }
-#         }
-#     };
-#     closedir $dir;
-# }
-
-# Usage example:
 
 # Define the _service file path
 my $service_file = '_service';
@@ -102,9 +60,9 @@ foreach my $service_node ($services_node->findnodes('//service')) {
     foreach my $param (@params) {
         push @service_params, $param->getAttribute('name'), $param->textContent();
     }
-
+    $service_mode = lc($service_mode);
     # Simulate the actions performed by OBS services based on the mode and parameters
-    if ($service_mode eq 'Default') {
+    if ($service_mode eq 'default') {
         # Implement the logic for the 'Default' mode
         default_mode_action($service_name)->(@service_params);
     } elsif ($service_mode eq 'trylocal') {
