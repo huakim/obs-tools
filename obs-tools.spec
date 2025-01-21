@@ -1,6 +1,6 @@
 Name: obs-tools
-Version: 12
-Release: 1
+Version: 13
+Release: 0
 License: LGPL
 Summary: %{name}
 BuildArch: noarch
