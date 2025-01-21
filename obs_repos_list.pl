@@ -7,6 +7,8 @@ use XML::LibXML;
 # File path
 my $file_path = '_repolist';
 
+if (-f $file_path){
+
 # Create a new XML parser
 my $parser = XML::LibXML->new();
 
@@ -19,4 +21,6 @@ my @urls = $doc->findnodes('//url');
 # Print the URLs
 foreach my $url (@urls) {
     print $url->textContent(), "\n";
+}
+
 }
