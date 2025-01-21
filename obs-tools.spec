@@ -15,7 +15,7 @@ Source5: obs_service_build.sh
 Source6: obs_local_run.pl
 Source7: pkg_check_available.sh
 Source8: obs_service_pkg_list.sh
-Source9: obs_repos_list.sh
+Source9: obs_repos_list.pl
 
 Requires: (%{_bindir}/perl or perl-interpreter or perl)
 Requires: cpio
@@ -35,8 +35,43 @@ install -Dm755 %{SOURCE8} %{buildroot}%{_bindir}/obs_service_pkg_list
 install -Dm755 %{SOURCE9} %{buildroot}%{_bindir}/obs_repos_list
 install -Dm755 %{SOURCE2} %{buildroot}%{_bindir}/obs_copr_build
 %{lua:
+
+exclude_package_managers = {}
+only_package_managers = {}
+exclude_all = false
+
+if rpm.isdefined("EXCLUDE_PACKAGE_MANAGERS")
+then
+for word in rpm.expand("%{EXCLUDE_PACKAGE_MANAGERS}"):gmatch("%S+")
+do
+    exclude_package_managers[word] = true
+end
+end
+
+if rpm.isdefined("ONLY_PACKAGE_MANAGERS")
+then
+for word in rpm.expand("%{ONLY_PACKAGE_MANAGERS}"):gmatch("%S+")
+do
+    only_package_managers[word] = true
+    exclude_all = true
+end
+end
+
+allowed_package_manager = function(word)
+  if exclude_all
+  then
+     return not not only_package_managers[word]
+  else
+     return not exclude_package_managers[word]
+  end
+end
+
+package_manager_string = '/'
+
 for key, value in pairs({ dnf = 'provides', dnf5 = 'provides', zypper = 'search --provides --match-exact', microdnf = 'provides' })
 do
+if allowed_package_manager(key)
+then
 rpm.define('pkg_manager_name '..key)
 rpm.define('pkg_manager_provides '..key..' '..value)
 print( rpm.expand( [[
@@ -46,7 +81,13 @@ print( rpm.expand( [[
   cat %{SOURCE7} | sed "s/dnf provides/%{pkg_manager_provides}/g;" > %{buildroot}%{_bindir}/"%{pkg_manager_name}_check_available"
   chmod 755 %{buildroot}%{_bindir}/"%{pkg_manager_name}_check_available"
 ]] ))
+
+package_manager_string = package_manager_string .. '/' .. key .. '/'
+
 end
+end
+
+rpm.define('INCLUDE_PACKAGE_MANAGERS '.. package_manager_string)
 }
 install -Dm755 %{SOURCE4} %{buildroot}%{_bindir}/obs_git_build
 install -Dm755 %{SOURCE5} %{buildroot}%{_bindir}/obs_service_build
@@ -57,7 +98,10 @@ install -Dm755 %{SOURCE6} %{buildroot}%{_bindir}/obs_local_run
 %attr(755, root, root) %{_bindir}/obs_service_list
 %attr(755, root, root) %{_bindir}/obs_local_run
 %attr(755, root, root) %{_bindir}/obs_service_pkg_list
-
+%attr(755, root, root) %{_bindir}/obs_repos_list
+%if %{defined NO_COPR_TOOLS}
+%exclude %{_bindir}/obs_copr_build
+%else
 %package copr
 Summary: %{name}
 Requires: %{name}-pkg
@@ -69,10 +113,10 @@ Requires: (%{_bindir}/rpmbuild or rpm-build or rpmbuild)
 
 %files copr
 %attr(755, root, root) %{_bindir}/obs_copr_build
+%endif
 
 %{lua:
-pkgs = {'dnf', 'dnf5', 'microdnf', 'zypper'}
-for _, p in ipairs(pkgs)
+for p in rpm.expand("%{INCLUDE_PACKAGE_MANAGERS}"):gmatch("[^/]+")
 do
 rpm.define("pkg_manager_name "..p)
 print(rpm.expand([[
