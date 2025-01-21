@@ -15,6 +15,7 @@ Source5: obs_service_build.sh
 Source6: obs_local_run.pl
 Source7: pkg_check_available.sh
 Source8: obs_service_pkg_list.sh
+Source9: obs_repos_list.sh
 
 Requires: (%{_bindir}/perl or perl-interpreter or perl)
 Requires: cpio
@@ -31,6 +32,7 @@ Requires: sed
 install -Dm755 %{SOURCE0} %{buildroot}%{_bindir}/obs_service_run
 install -Dm755 %{SOURCE1} %{buildroot}%{_bindir}/obs_service_list
 install -Dm755 %{SOURCE8} %{buildroot}%{_bindir}/obs_service_pkg_list
+install -Dm755 %{SOURCE9} %{buildroot}%{_bindir}/obs_repos_list
 install -Dm755 %{SOURCE2} %{buildroot}%{_bindir}/obs_copr_build
 %{lua:
 for key, value in pairs({ dnf = 'provides', dnf5 = 'provides', zypper = 'search --provides --match-exact', microdnf = 'provides' })
