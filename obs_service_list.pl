@@ -29,7 +29,7 @@ foreach my $service_node ($services_node->findnodes('//service')) {
         print("$service_name\n");
     } elsif ($service_mode eq 'trylocal') {
         # Implement the logic for the 'trylocal' mode
-    #    print("$service_name\n");
+        print("$service_name\n");
     } elsif ($service_mode eq 'localonly') {
         # Implement the logic for the 'localonly' mode
         print("$service_name\n");

@@ -16,6 +16,7 @@ Source6: obs_local_run.pl
 Source7: pkg_check_available.sh
 Source8: obs_service_pkg_list.sh
 Source9: obs_repos_list.pl
+Source10: obs_pkg_list.pl
 
 Requires: (%{_bindir}/perl or perl-interpreter or perl)
 Requires: cpio
@@ -33,6 +34,7 @@ install -Dm755 %{SOURCE0} %{buildroot}%{_bindir}/obs_service_run
 install -Dm755 %{SOURCE1} %{buildroot}%{_bindir}/obs_service_list
 install -Dm755 %{SOURCE8} %{buildroot}%{_bindir}/obs_service_pkg_list
 install -Dm755 %{SOURCE9} %{buildroot}%{_bindir}/obs_repos_list
+install -Dm755 %{SOURCE10} %{buildroot}%{_bindir}/obs_pkg_list
 install -Dm755 %{SOURCE2} %{buildroot}%{_bindir}/obs_copr_build
 %{lua:
 
@@ -97,6 +99,7 @@ install -Dm755 %{SOURCE6} %{buildroot}%{_bindir}/obs_local_run
 %attr(755, root, root) %{_bindir}/obs_service_run
 %attr(755, root, root) %{_bindir}/obs_service_list
 %attr(755, root, root) %{_bindir}/obs_local_run
+%attr(755, root, root) %{_bindir}/obs_pkg_list
 %attr(755, root, root) %{_bindir}/obs_service_pkg_list
 %attr(755, root, root) %{_bindir}/obs_repos_list
 %if %{defined NO_COPR_TOOLS}
