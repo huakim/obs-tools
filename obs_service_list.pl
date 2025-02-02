@@ -39,7 +39,7 @@ foreach my $service_node ($services_node->findnodes('//service')) {
     } elsif ($service_mode eq 'buildtime') {
         # Implement the logic for the 'buildtime' mode
 #        print("$service_name\n");
-#    } elsif ($service_mode eq 'manual') {
+    } elsif ($service_mode eq 'manual') {
         # Implement the logic for the 'manual' mode
     #    print("$service_name\n");
     #} elsif ($service_mode eq 'disabled') {
