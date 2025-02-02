@@ -13,17 +13,6 @@ use IPC::Run3;
 # Define the _service file path
 my $service_file = '_service';
 
-if (-f $service_file){
-
-# Create an XML::LibXML object
-my $parser = XML::LibXML->new();
-
-# Parse the _service file
-my $doc = $parser->parse_file($service_file);
-
-# Extract information from the _service file
-my $services_node = $doc->documentElement();
-
 my @build_mode_functions;
 my %source_files;
 our $home_directory = getcwd();
@@ -37,52 +26,63 @@ make_path($source_directory);
 make_path($output_directory);
 
 {
-  my $dir;
-  opendir $dir, '.';
-  for my $basename (readdir $dir) {
-    if (-f $basename) {
-      my $dest_file = catfile($source_directory, $basename);
-      link($basename, $dest_file);
-      $source_files{$basename} = $basename;
+    my $dir;
+    opendir $dir, '.';
+    for my $basename (readdir $dir) {
+        if (-f $basename) {
+            my $dest_file = catfile($source_directory, $basename);
+            link($basename, $dest_file);
+            $source_files{$basename} = $basename;
+        }
     }
-  };
-  closedir $dir;
+    closedir $dir;
 }
 
-# Iterate over service elements
-foreach my $service_node ($services_node->findnodes('//service')) {
-    my $service_name = $service_node->getAttribute('name');
-    my $service_mode = $service_node->getAttribute('mode') || 'Default';
+if (-f $service_file){
+    # Create an XML::LibXML object
+    my $parser = XML::LibXML->new();
 
-    # Extract parameters for each service
-    my @params = $service_node->findnodes('.//param');
-    my @service_params = ();
-    foreach my $param (@params) {
-        push @service_params, $param->getAttribute('name'), $param->textContent();
-    }
-    $service_mode = lc($service_mode);
-    # Simulate the actions performed by OBS services based on the mode and parameters
-    if ($service_mode eq 'default') {
-        # Implement the logic for the 'Default' mode
-        default_mode_action($service_name)->(@service_params);
-    } elsif ($service_mode eq 'trylocal') {
-        # Implement the logic for the 'trylocal' mode
-        trylocal_mode_action($service_name)->(@service_params);
-    } elsif ($service_mode eq 'localonly') {
-        # Implement the logic for the 'localonly' mode
-        localonly_mode_action($service_name)->(@service_params);
-    } elsif ($service_mode eq 'serveronly') {
-        # Implement the logic for the 'serveronly' mode
-        serveronly_mode_action($service_name)->(@service_params);
-    } elsif ($service_mode eq 'buildtime') {
-        # Implement the logic for the 'buildtime' mode
-        buildtime_mode_action($service_name)->(@service_params);
-    } elsif ($service_mode eq 'manual') {
-        # Implement the logic for the 'manual' mode
-        manual_mode_action($service_name)->(@service_params);
-    } elsif ($service_mode eq 'disabled') {
-        # Implement the logic for the 'disabled' mode
-        disabled_mode_action($service_name)->(@service_params);
+    # Parse the _service file
+    my $doc = $parser->parse_file($service_file);
+
+    # Extract information from the _service file
+    my $services_node = $doc->documentElement();
+
+    # Iterate over service elements
+    foreach my $service_node ($services_node->findnodes('//service')) {
+        my $service_name = $service_node->getAttribute('name');
+        my $service_mode = $service_node->getAttribute('mode') || 'Default';
+
+        # Extract parameters for each service
+        my @params = $service_node->findnodes('.//param');
+        my @service_params = ();
+        foreach my $param (@params) {
+            push @service_params, $param->getAttribute('name'), $param->textContent();
+        }
+        $service_mode = lc($service_mode);
+        # Simulate the actions performed by OBS services based on the mode and parameters
+        if ($service_mode eq 'default') {
+            # Implement the logic for the 'Default' mode
+            default_mode_action($service_name)->(@service_params);
+        } elsif ($service_mode eq 'trylocal') {
+            # Implement the logic for the 'trylocal' mode
+            trylocal_mode_action($service_name)->(@service_params);
+        } elsif ($service_mode eq 'localonly') {
+            # Implement the logic for the 'localonly' mode
+            localonly_mode_action($service_name)->(@service_params);
+        } elsif ($service_mode eq 'serveronly') {
+            # Implement the logic for the 'serveronly' mode
+            serveronly_mode_action($service_name)->(@service_params);
+        } elsif ($service_mode eq 'buildtime') {
+            # Implement the logic for the 'buildtime' mode
+            buildtime_mode_action($service_name)->(@service_params);
+        } elsif ($service_mode eq 'manual') {
+            # Implement the logic for the 'manual' mode
+            manual_mode_action($service_name)->(@service_params);
+        } elsif ($service_mode eq 'disabled') {
+            # Implement the logic for the 'disabled' mode
+            disabled_mode_action($service_name)->(@service_params);
+        }
     }
 }
 
@@ -225,4 +225,3 @@ sub RunAfter {
     };
 }
 
-}
