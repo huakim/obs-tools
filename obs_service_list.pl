@@ -32,13 +32,13 @@ foreach my $service_node ($services_node->findnodes('//service')) {
         print("$service_name\n");
     } elsif ($service_mode eq 'localonly') {
         # Implement the logic for the 'localonly' mode
-        print("$service_name\n");
+#        print("$service_name\n");
     } elsif ($service_mode eq 'serveronly') {
         # Implement the logic for the 'serveronly' mode
         print("$service_name\n");
     } elsif ($service_mode eq 'buildtime') {
         # Implement the logic for the 'buildtime' mode
-#        print("$service_name\n");
+        print("$service_name\n");
     } elsif ($service_mode eq 'manual') {
         # Implement the logic for the 'manual' mode
     #    print("$service_name\n");
