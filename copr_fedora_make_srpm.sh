@@ -6,5 +6,4 @@ obs_repos_list | while IFS= read -r line; do
     REPOS_ORDER+=1
 done
 dnf install --setopt=reposdir="${REPOSDIR}" -y obs-build `obs_service_pkg_list`
-obs_local_run
 obs_service_run
