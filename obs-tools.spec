@@ -21,6 +21,7 @@ Source10: obs_pkg_list.pl
 Requires: (%{_bindir}/perl or perl-interpreter or perl)
 Requires: cpio
 Requires: sed
+Requires: obs-build
 
 %global __perl_requires %{_rpmconfigdir}/perl.req
 
